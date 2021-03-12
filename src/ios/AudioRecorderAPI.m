@@ -66,6 +66,13 @@
   _command = command;
   NSLog(@"stopRecording");
   [recorder stop];
+  //此处需要恢复设置回放标志，否则会导致其它播放声音也会变小
+  NSError *err;
+  AVAudioSession *session = [AVAudioSession sharedInstance];
+  [session setCategory:AVAudioSessionCategoryPlayback error:nil];
+  [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&err];
+  //[session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:&err];
+  [session setActive:YES error:nil];
   NSLog(@"stopped");
 }
 
